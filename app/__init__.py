@@ -1,0 +1,1 @@
+"""API for controlling SR SMITH Pool lights using raspberry pi and relay switch"""

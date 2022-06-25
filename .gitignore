@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 # .pylintrc
 .coverage
+currents.ini
 *.egg-info/
 coverage.xml
 htmlcov/

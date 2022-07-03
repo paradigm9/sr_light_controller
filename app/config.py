@@ -1,5 +1,7 @@
 """Configuration for light controller"""
 from configparser import ConfigParser
+from os.path import exists
+from shutil import copyfile
 
 MULTIPLE_RELAY = False
 
@@ -37,8 +39,16 @@ MODE_MAP = {
 
 INT_MODE_MAP = {k: v for v, k in MODE_MAP.items()}
 
+CONFIG_FILE = "app/currents.ini"
+
 current = ConfigParser()
-current.read("app/currents.ini")
+current.read(CONFIG_FILE)
+
+
+def setup_config():
+    """Copy template for config if a config does not exist"""
+    if not exists(CONFIG_FILE):
+        copyfile("app/currents_template.ini", CONFIG_FILE)
 
 
 def current_color():
@@ -49,7 +59,7 @@ def current_color():
 def set_color(value):
     """set the current color in the ini file"""
     current.set("current_values", "current_color", str(MODE_MAP.get(value)))
-    with open("app/currents.ini", "w") as configfile:
+    with open(CONFIG_FILE, "w", encoding="utf8") as configfile:
         current.write(configfile)
 
 
@@ -62,5 +72,5 @@ def set_power(_bool: bool):
     """Set power in ini, True is on, False is off"""
     value = 1 if _bool else 0
     current.set("current_values", "powered_on", str(value))
-    with open("app/currents.ini", "w") as configfile:
+    with open(CONFIG_FILE, "w", encoding="utf8") as configfile:
         current.write(configfile)

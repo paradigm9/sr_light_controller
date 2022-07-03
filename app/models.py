@@ -13,6 +13,17 @@ class Color(BaseModel):
     power: bool
 
 
+class ChangeColor(BaseModel):
+    """JSON body for changing color"""
+
+    color: str
+
+
+class ChangePower(BaseModel):
+
+    power: bool
+
+
 class ColorModes(BaseModel):
     """Model for available color modes"""
 

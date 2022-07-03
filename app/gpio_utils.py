@@ -32,9 +32,21 @@ def turn_on():
     GPIO.output(get_channels(), 0)
 
 
+def api_turn_on():
+    """Used for single call from API to turn on"""
+    turn_on()
+    config.set_power(True)
+
+
 def turn_off():
     """Turn off lights"""
     GPIO.output(get_channels(), 1)
+
+
+def api_turn_off():
+    """Used for single call from API to turn off"""
+    turn_off()
+    config.set_power(False)
 
 
 def is_on():
@@ -57,6 +69,20 @@ def change_mode():
     turn_on()
 
 
+def reset():
+    """Reset lights, this will result in lights being in mode 1/soft color change"""
+    turn_off()
+    sleep(5)
+    for _i in range(3):
+        turn_on()
+        sleep(0.5)
+        turn_off()
+    sleep(5)
+    turn_on()
+    config.set_color(config.SOFT)
+    config.set_power(True)
+
+
 def change_color(new_color: str) -> str:
     """Change color of lights"""
     current_color = config.current_color()
@@ -65,3 +91,4 @@ def change_color(new_color: str) -> str:
         change_mode()
         sleep(0.2)
     config.set_color(new_color)
+    config.set_power(True)

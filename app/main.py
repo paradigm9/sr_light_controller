@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app import apiv1
+from app.config import setup_config
 
 tags = [{"name": "Light Control", "description": "Endpoints for controlling SR Lights"}]
 
@@ -33,3 +34,9 @@ if __name__ == "__main__":
         log_level="debug",
         log_config="loggingconfig.yml",
     )
+
+
+@app.on_event("startup")
+async def startup():
+    """Create currents.ini on application startup if it does not exists"""
+    setup_config()

@@ -25,6 +25,13 @@ app.add_middleware(
 
 app.include_router(apiv1.router, prefix="/api/v1")
 
+
+@app.on_event("startup")
+async def startup():
+    """Create currents.ini on application startup if it does not exists"""
+    setup_config()
+
+
 if __name__ == "__main__":
     # for testing only
     uvicorn.run(
@@ -34,9 +41,3 @@ if __name__ == "__main__":
         log_level="debug",
         log_config="loggingconfig.yml",
     )
-
-
-@app.on_event("startup")
-async def startup():
-    """Create currents.ini on application startup if it does not exists"""
-    setup_config()

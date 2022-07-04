@@ -74,3 +74,27 @@ def set_power(_bool: bool):
     current.set("current_values", "powered_on", str(value))
     with open(CONFIG_FILE, "w", encoding="utf8") as configfile:
         current.write(configfile)
+
+
+class Settings:
+    """Class to returns settings"""
+
+    @property
+    def port(self):
+        """Return port"""
+        return current.get("current_values", "port")
+
+    @property
+    def username(self):
+        """Return username"""
+        return current.get("current_values", "username")
+
+    @property
+    def password(self):
+        """Return password"""
+        return current.get("current_values", "password")
+
+    @property
+    def secret_key(self):
+        """Return secret_key"""
+        return current.get("current_values", "secret_key")

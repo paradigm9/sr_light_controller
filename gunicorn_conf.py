@@ -1,6 +1,10 @@
 from gunicorn import glogging
 from uvicorn.workers import UvicornWorker
 
+from app.config import setup_config
+
+setup_config()
+
 workers = 4
 accesslog = "-"  # to stdout
 worker_class = "gunicorn_conf.AppUviconWorker"

@@ -56,12 +56,13 @@ async def get_available_colors(user=Security(get_current_user, scopes=["read"]))
     return ColorModes()
 
 
-@router.put("/reset")
+@router.put("/reset", response_model=Color)
 async def reset_lights(user=Security(get_current_user, scopes=["read"])):
     """Reset lights to default"""
     gpio_utils.reset()
+    color = Color(color=config.current_color(), power=config.current_power())
     logger.info("User %s called reset_lights", user.username)
-    return {}
+    return color
 
 
 @router.put("/color", response_model=Color)

@@ -42,13 +42,14 @@ INT_MODE_MAP = {k: v for v, k in MODE_MAP.items()}
 CONFIG_FILE = "app/currents.ini"
 
 current = ConfigParser()
-current.read(CONFIG_FILE)
+# current.read(CONFIG_FILE)
 
 
 def setup_config():
     """Copy template for config if a config does not exist"""
     if not exists(CONFIG_FILE):
         copyfile("app/currents_template.ini", CONFIG_FILE)
+    current.read(CONFIG_FILE)
 
 
 def current_color():

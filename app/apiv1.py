@@ -1,7 +1,7 @@
 """APIv1"""
 import logging
 
-from fastapi import APIRouter, Depends, Form, Security
+from fastapi import APIRouter, Depends, Form, Path, Security
 
 from app import config, gpio_utils
 from app.dependencies import (
@@ -65,11 +65,14 @@ async def reset_lights(user=Security(get_current_user, scopes=["read"])):
     return color
 
 
-@router.put("/color", response_model=Color)
-async def change_color(color: ChangeColor, user=Security(get_current_user, scopes=["read"])):
+@router.put("/color/{color}", response_model=Color)
+async def change_color(
+    color: str = Path(..., examples={x: {"value": x} for x in config.INT_MODE_MAP.values()}),
+    user=Security(get_current_user, scopes=["read"]),
+):
     """Change current color or mode"""
-    gpio_utils.change_color(color.color)
-    logger.info("User %s called change_color with color %s", user.username, color.color)
+    gpio_utils.change_color(color)
+    logger.info("User %s called change_color with color %s", user.username, color)
     return Color(color=config.current_color(), power=config.current_power())
 
 

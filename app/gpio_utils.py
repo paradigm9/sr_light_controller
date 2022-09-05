@@ -49,7 +49,7 @@ def is_on():
     if not isinstance(channels, list):
         _channels = [channels]
     for channel in _channels:
-        if not GPIO.input(channel):
+        if GPIO.input(channel):
             return False
     return True
 
@@ -88,7 +88,10 @@ def reset():
 def change_color(new_color: str) -> str:
     """Change color of lights"""
     current_color = config.current_color()
-    cycles = config.MODE_MAP.get(current_color) - config.MODE_MAP.get(new_color)
+    if config.MODE_MAP.get(current_color) > config.MODE_MAP.get(new_color):
+        cycles = (config.MODE_MAP.get(new_color) - config.MODE_MAP.get(current_color)) + 8
+    else:
+        cycles = config.MODE_MAP.get(new_color) - config.MODE_MAP.get(current_color)
     for _ in range(cycles):
         change_mode()
     config.set_color(new_color)

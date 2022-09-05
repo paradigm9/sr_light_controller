@@ -59,6 +59,13 @@ def is_on():
     return True
 
 
+def cycle_on_off():
+    """Cycle power on off"""
+    turn_on()
+    sleep(0.5)
+    turn_off()
+
+
 def change_mode():
     """Change mode, 1 cycle"""
     if not is_on():
@@ -74,9 +81,7 @@ def reset():
     turn_off()
     sleep(5)
     for _i in range(3):
-        turn_on()
-        sleep(0.5)
-        turn_off()
+        cycle_on_off()
     sleep(5)
     turn_on()
     config.set_color(config.SOFT)

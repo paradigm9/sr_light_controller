@@ -76,19 +76,15 @@ def change_mode():
     turn_on()
 
 
-def loop(count: int):
-    i = 1
-    while True:
-        cycle_on_off()
-        if i == count:
-            break
-
-
 def reset():
     """Reset lights, this will result in lights being in mode 1/soft color change"""
     turn_off()
     sleep(5)
-    loop(count=3)
+    cycle_on_off()
+    sleep(0.5)
+    cycle_on_off()
+    sleep(0.5)
+    cycle_on_off()
     sleep(5)
     turn_on()
     config.set_color(config.SOFT)

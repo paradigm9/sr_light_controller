@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app import apiv1
 from app.config import setup_config
+from app.gpio_utils import setup
 
 tags = [{"name": "Light Control", "description": "Endpoints for controlling SR Lights"}]
 
@@ -30,6 +31,7 @@ app.include_router(apiv1.router, prefix="/api/v1")
 async def startup_even():
     "check config"
     setup_config()
+    setup()
 
 
 if __name__ == "__main__":

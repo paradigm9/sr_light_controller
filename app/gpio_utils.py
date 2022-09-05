@@ -14,22 +14,17 @@ except:  # pylint: disable=bare-except
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-
-def get_channels() -> Union[list, str]:
-    """Return channels from config"""
-    if config.MULTIPLE_RELAY:
-        return config.RELAY_CHANNELS
-    return config.MAIN_RELAY
+channels = config.RELAY_CHANNELS if config.MULTIPLE_RELAY else config.MAIN_RELAY
 
 
 def setup():
     """Setup GPIO channel(s) for relay"""
-    GPIO.setup(get_channels(), GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(channels, GPIO.OUT, initial=GPIO.LOW)
 
 
 def turn_on():
     """Turn on lights"""
-    GPIO.output(get_channels(), 0)
+    GPIO.output(channels, 0)
 
 
 def api_turn_on():
@@ -40,7 +35,7 @@ def api_turn_on():
 
 def turn_off():
     """Turn off lights"""
-    GPIO.output(get_channels(), 1)
+    GPIO.output(channels, 1)
 
 
 def api_turn_off():
@@ -51,8 +46,8 @@ def api_turn_off():
 
 def is_on():
     """check if pin/light is on"""
-    if not isinstance(get_channels(), list):
-        _channels = [get_channels()]
+    if not isinstance(channels, list):
+        _channels = [channels]
     for channel in _channels:
         if not GPIO.input(channel):
             return False
@@ -64,6 +59,7 @@ def cycle_on_off():
     turn_on()
     sleep(0.5)
     turn_off()
+    sleep(0.5)
 
 
 def change_mode():
@@ -74,17 +70,15 @@ def change_mode():
     turn_off()
     sleep(0.5)
     turn_on()
+    sleep(0.5)
 
 
 def reset():
     """Reset lights, this will result in lights being in mode 1/soft color change"""
     turn_off()
     sleep(5)
-    cycle_on_off()
-    sleep(0.5)
-    cycle_on_off()
-    sleep(0.5)
-    cycle_on_off()
+    for _ in range(3):
+        cycle_on_off()
     sleep(5)
     turn_on()
     config.set_color(config.SOFT)
@@ -97,6 +91,5 @@ def change_color(new_color: str) -> str:
     cycles = config.MODE_MAP.get(current_color) - config.MODE_MAP.get(new_color)
     for _ in range(cycles):
         change_mode()
-        sleep(0.2)
     config.set_color(new_color)
     config.set_power(True)

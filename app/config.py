@@ -5,7 +5,7 @@ from shutil import copyfile
 
 MULTIPLE_RELAY = False
 
-MAIN_RELAY = 14
+MAIN_RELAY = 17
 
 RELAY_CHANNELS = []
 

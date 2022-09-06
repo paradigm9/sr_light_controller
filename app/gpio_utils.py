@@ -61,20 +61,20 @@ def is_on():
 def cycle_on_off():
     """Cycle power on off"""
     turn_on()
-    sleep(0.5)
+    sleep(0.2)
     turn_off()
-    sleep(0.5)
+    sleep(0.2)
 
 
 def change_mode():
     """Change mode, 1 cycle"""
     if not is_on():
         turn_on()
-        sleep(0.5)
+        sleep(0.2)
     turn_off()
-    sleep(0.5)
+    sleep(0.2)
     turn_on()
-    sleep(0.5)
+    sleep(0.2)
 
 
 def reset():

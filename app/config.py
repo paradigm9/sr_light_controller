@@ -66,7 +66,7 @@ def set_color(value):
 
 
 def current_power():
-    """get teh current power from ini file"""
+    """get the current power from ini file"""
     current.read(CONFIG_FILE)
     return bool(int(current.get("current_values", "powered_on")))
 

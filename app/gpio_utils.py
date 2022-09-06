@@ -22,6 +22,8 @@ channels = config.RELAY_CHANNELS if config.MULTIPLE_RELAY else config.MAIN_RELAY
 def setup():
     """Setup GPIO channel(s) for relay"""
     GPIO.setup(channels, GPIO.OUT, initial=GPIO.LOW)
+    if not config.current_power():
+        GPIO.output(channels, 1)
 
 
 def turn_on():

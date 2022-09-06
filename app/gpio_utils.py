@@ -1,6 +1,6 @@
 """GPIO Module utils"""
+import logging
 from time import sleep
-from typing import Union
 
 from app import config
 
@@ -13,6 +13,8 @@ except:  # pylint: disable=bare-except
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
+
+logger = logging.getLogger(__name__)
 
 channels = config.RELAY_CHANNELS if config.MULTIPLE_RELAY else config.MAIN_RELAY
 
@@ -75,6 +77,7 @@ def change_mode():
 
 def reset():
     """Reset lights, this will result in lights being in mode 1/soft color change"""
+    logger.debug("Resetting light modes")
     turn_off()
     sleep(5)
     for _ in range(3):
@@ -88,10 +91,12 @@ def reset():
 def change_color(new_color: str) -> str:
     """Change color of lights"""
     current_color = config.current_color()
+    logger.debug("Current color is %s", current_color)
     if config.MODE_MAP.get(current_color) > config.MODE_MAP.get(new_color):
         cycles = (config.MODE_MAP.get(new_color) - config.MODE_MAP.get(current_color)) + 8
     else:
         cycles = config.MODE_MAP.get(new_color) - config.MODE_MAP.get(current_color)
+    logger.debug("number of cycle is %s", cycles)
     for _ in range(cycles):
         change_mode()
     config.set_color(new_color)

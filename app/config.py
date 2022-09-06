@@ -54,6 +54,7 @@ def setup_config():
 
 def current_color():
     """get the current color from ini file"""
+    current.read(CONFIG_FILE)
     return INT_MODE_MAP.get(int(current.get("current_values", "current_color")))
 
 
@@ -66,6 +67,7 @@ def set_color(value):
 
 def current_power():
     """get teh current power from ini file"""
+    current.read(CONFIG_FILE)
     return bool(int(current.get("current_values", "powered_on")))
 
 
